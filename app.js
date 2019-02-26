@@ -16,6 +16,8 @@ mongoose.connect(connectionString, { useNewUrlParser: true })
         console.log(err);
 });
 
+const Name = require('./models/Name');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3000;
 
@@ -31,8 +33,15 @@ app.get("/index", (req, res) => {
 
 app.post("/form-submission", (req, res) => {
 	console.log(req.body);
-	res.send("hello " + req.body.firstname);
-	// console.log(req.body.firstname);	
+	Name.create({firstname: req.body.firstname}, (err, data) => {
+		if (err) {
+			console.log(err);
+		}
+		else{
+			console.log("user created");
+			res.send("hello " + req.body.firstname);
+		}
+	});
 });
 
 app.get("/route", (req, res) => {
